@@ -30,6 +30,8 @@
         <service
             android:name=".MyJobIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver android:name=".AlarmReceiver" />
     </application>
 
 </manifest>

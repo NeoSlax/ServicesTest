@@ -1,16 +1,21 @@
 package com.example.servicestest
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.app.job.JobWorkItem
 import android.content.ComponentName
+import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.servicestest.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -56,6 +61,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding.jobIntentService.setOnClickListener {
             MyJobIntentService.enqueue(this, page++)
+        }
+        binding.alarmManager.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.SECOND, 30)
+            val intent = AlarmReceiver.newInstance(this)
+            val pendingIntent = PendingIntent.getBroadcast(this, 1, intent,0)
+            val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,pendingIntent)
+            Toast.makeText(this, "Ok, I'll remind you in 30 seconds", Toast.LENGTH_SHORT).show()
         }
         binding.workManager.setOnClickListener {
 //            val workManager = WorkManager.getInstance(applicationContext)
