@@ -2,6 +2,7 @@ package com.example.servicestest
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,10 +17,13 @@ class AlarmReceiver : BroadcastReceiver() {
             val notificationManager =
                 getSystemService(it, NotificationManager::class.java) as NotificationManager
             createNotificationChannel(notificationManager)
+            val pendingIntent = PendingIntent.getActivity(it, 0, MainActivity.getInstance(it), PendingIntent.FLAG_UPDATE_CURRENT)
             val notification = NotificationCompat.Builder(it, NOTIFICATION_CHANNEL_ID)
                 .setContentTitle("Alarm")
                 .setContentText("30 seconds have passed")
                 .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .build()
             notificationManager.notify(NOTIFICATION_ID, notification)
         }

@@ -6,6 +6,7 @@ import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.app.job.JobWorkItem
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
@@ -103,5 +104,11 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         unbindService(serviceConnection)
+    }
+
+    companion object {
+        fun getInstance(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
     }
 }
