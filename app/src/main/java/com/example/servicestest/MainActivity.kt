@@ -1,18 +1,15 @@
 package com.example.servicestest
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.app.job.JobWorkItem
 import android.content.ComponentName
+import android.content.ServiceConnection
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.NotificationCompat
+import android.os.IBinder
 import androidx.core.content.ContextCompat
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import com.example.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -69,5 +66,28 @@ class MainActivity : AppCompatActivity() {
 //            )
             MyWorkManager.work(application, page++)
         }
+    }
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val myLocalBinder = (service as? MyForegroundService.LocalBinder) ?: return
+            val myService = myLocalBinder.getService()
+            myService.onProgressChange = MyForegroundService.OnProgressChange { progress ->
+                binding.progressBar.progress = progress
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindService(MyForegroundService.newInstance(this), serviceConnection, 0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(serviceConnection)
     }
 }

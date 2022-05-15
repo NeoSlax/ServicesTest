@@ -13,6 +13,8 @@ class MyWorkManager(context: Context, private val workerParams: WorkerParameters
         log("doWork")
         val page = workerParams.inputData.getInt(PAGE, 0)
         countDown(page)
+        Result.retry()
+        Result.failure()
         return Result.success()
     }
 

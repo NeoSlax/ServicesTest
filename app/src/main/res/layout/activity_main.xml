@@ -9,6 +9,12 @@
     tools:context=".MainActivity"
     >
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/simple_service"
         style="@style/ServiceButtonStyle"
@@ -64,4 +70,5 @@
         android:layout_height="wrap_content"
         android:text="@string/work_manager"
         />
+
 </LinearLayout>
